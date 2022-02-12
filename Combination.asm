@@ -1,0 +1,35 @@
+DATA SEGMENT
+    N EQU 0004H
+    R EQU 0002H
+DATA ENDS
+CODE SEGMENT
+ASSUME CS:CODE, DS:DATA
+START:
+    MOV AX,N
+    MOV BX,R 
+    SUB AX,BX 
+    MOV BX,AX
+    MOV AX,0001H
+RPT: ;FOR (N-R)!
+    MUL BX
+    DEC BX
+    JNZ RPT 
+    MOV CX,AX
+    MOV AX,0001H
+    MOV BX,R
+RPT1: ;FOR R! 
+    MUL BX
+    DEC BX
+    JNZ RPT1
+    MUL CX
+    MOV CX,AX 
+    MOV AX,0001H 
+    MOV BX,N 
+RPT2: ;FOR N!
+    MUL BX
+    DEC BX
+    JNZ RPT2 ;AX=N!
+    DIV CX ;AX=AX/((N-R)!*R!)
+    HLT
+CODE ENDS 
+END START
